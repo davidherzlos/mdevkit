@@ -10,6 +10,13 @@ mdocker="$src"/moodle-docker/
 
 # Load env variables for containers.
 source "$src"/.env
+moodledir="$MOODLE_DOCKER_WWWROOT"
+
+export COMPOSE_PROJECT_NAME
+export MOODLE_DOCKER_WWWROOT="$src"/"$moodledir"
+export MOODLE_DOCKER_PHP_VERSION
+export MOODLE_DOCKER_DB
+export MOODLE_DOCKER_WEB_PORT
 
 # Commands:
 case "$1" in
@@ -67,13 +74,17 @@ case "$1" in
     "$mdocker"/bin/moodle-docker-compose exec webserver php admin/tool/behat/cli/run.php
     ;;
   "setup")
+    echo "Getting submodules"
+    git submodule update --init
+    git --git-dir="$src"/moodle-dotfiles/.git checkout master
+    git --git-dir="$src"/moodle-dotfiles/.git pull
     echo "Setting up Development Environment"
-    docker cp "$src"/moodle-dotfiles/ "COMPOSE_PROJECT_NAME"_webserver_1:/root/
+    docker cp "$src"/moodle-dotfiles/ "$COMPOSE_PROJECT_NAME"_webserver_1:/root/
     "$mdocker"/bin/moodle-docker-compose exec webserver bash /root/moodle-dotfiles/install.sh
     "$mdocker"/bin/moodle-docker-compose restart webserver
 
-    echo "Installing moodle database"
-    "$mdocker"/bin/moodle-docker-compose exec webserver php admin/cli/install_database.php --adminpass=admin --agree-license --adminemail=admin@mailinator.com --fullname=DevSite --shortname=devsite
+    #echo "Installing moodle database"
+    #"$mdocker"/bin/moodle-docker-compose exec webserver php admin/cli/install_database.php --adminpass=admin --agree-license --adminemail=admin@mailinator.com --fullname=DevSite --shortname=devsite
     ;;
   "refresh_nvim")
     echo "Refreshing neovim config"
