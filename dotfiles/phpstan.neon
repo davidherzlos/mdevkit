@@ -1,5 +1,0 @@
-includes:
-    - vendor/micaherne/phpstan-moodle/extension.neon
-parameters:
-    moodle:
-        rootDirectory: /var/www/html
