@@ -74,10 +74,6 @@ case "$1" in
     "$mdocker"/bin/moodle-docker-compose exec webserver php admin/tool/behat/cli/run.php
     ;;
   "setup")
-    echo "Getting submodules"
-    git submodule update --init
-    git --git-dir="$src"/moodle-dotfiles/.git checkout master
-    git --git-dir="$src"/moodle-dotfiles/.git pull
     echo "Setting up Development Environment"
     docker cp "$src"/moodle-dotfiles/ "$COMPOSE_PROJECT_NAME"_webserver_1:/
     "$mdocker"/bin/moodle-docker-compose exec webserver bash /moodle-dotfiles/install.sh
