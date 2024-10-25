@@ -80,11 +80,11 @@ case "$1" in
     git --git-dir="$src"/moodle-dotfiles/.git pull
     echo "Setting up Development Environment"
     docker cp "$src"/moodle-dotfiles/ "$COMPOSE_PROJECT_NAME"_webserver_1:/
-    "$mdocker"/bin/moodle-docker-compose exec webserver bash /root/moodle-dotfiles/install.sh
+    "$mdocker"/bin/moodle-docker-compose exec webserver bash /moodle-dotfiles/install.sh
     "$mdocker"/bin/moodle-docker-compose restart webserver
 
-    #echo "Installing moodle database"
-    #"$mdocker"/bin/moodle-docker-compose exec webserver php admin/cli/install_database.php --adminpass=admin --agree-license --adminemail=admin@mailinator.com --fullname=DevSite --shortname=devsite
+    echo "Installing moodle database"
+    "$mdocker"/bin/moodle-docker-compose exec webserver php admin/cli/install_database.php --adminpass=admin --agree-license --adminemail=admin@mailinator.com --fullname=DevSite --shortname=devsite
     ;;
   "refresh_nvim")
     echo "Refreshing neovim config"
