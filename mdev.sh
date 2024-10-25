@@ -79,7 +79,7 @@ case "$1" in
     git --git-dir="$src"/moodle-dotfiles/.git checkout master
     git --git-dir="$src"/moodle-dotfiles/.git pull
     echo "Setting up Development Environment"
-    docker cp "$src"/moodle-dotfiles/ "$COMPOSE_PROJECT_NAME"_webserver_1:/root/
+    docker cp "$src"/moodle-dotfiles/ "$COMPOSE_PROJECT_NAME"_webserver_1:/
     "$mdocker"/bin/moodle-docker-compose exec webserver bash /root/moodle-dotfiles/install.sh
     "$mdocker"/bin/moodle-docker-compose restart webserver
 
