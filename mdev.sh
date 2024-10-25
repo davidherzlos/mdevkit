@@ -47,11 +47,11 @@ case "$1" in
     ;;
   "upgrade")
     echo "Upgrading moodle"
-    "$mdocker"/bin/moodle-docker-compose exec webserver php admin/cli/upgrade.php --non-interactive "$2"
+    "$mdocker"/bin/moodle-docker-compose exec webserver php admin/cli/upgrade.php --non-interactive
     ;;
   "purge_caches")
     echo "Purging moodle caches"
-    "$mdocker"/bin/moodle-docker-compose exec webserver php admin/cli/purge_caches.php --non-interactive
+    "$mdocker"/bin/moodle-docker-compose exec webserver php admin/cli/purge_caches.php
     ;;
   "cron")
     echo "Running moodle cron"
@@ -82,9 +82,6 @@ case "$1" in
     docker cp "$src"/moodle-dotfiles/ "$COMPOSE_PROJECT_NAME"_webserver_1:/
     "$mdocker"/bin/moodle-docker-compose exec webserver bash /moodle-dotfiles/install.sh
     "$mdocker"/bin/moodle-docker-compose restart webserver
-
-    echo "Installing moodle database"
-    "$mdocker"/bin/moodle-docker-compose exec webserver php admin/cli/install_database.php --adminpass=admin --agree-license --adminemail=admin@mailinator.com --fullname=DevSite --shortname=devsite
     ;;
   "refresh_nvim")
     echo "Refreshing neovim config"
