@@ -41,6 +41,10 @@ case "$1" in
     "$mdocker"/bin/moodle-docker-compose stop
     "$mdocker"/bin/moodle-docker-compose start
     ;;
+  "restart_webserver")
+    echo "Restarting moodle webserver"
+    "$mdocker"/bin/moodle-docker-compose restart webserver
+    ;;
   "install_db")
     echo "Installing moodle database"
     "$mdocker"/bin/moodle-docker-compose exec webserver php admin/cli/install_database.php --adminpass=admin --agree-license --adminemail=admin@mailinator.com --fullname=DevSite --shortname=devsite
