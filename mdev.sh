@@ -79,14 +79,14 @@ case "$1" in
     ;;
   "setup")
     echo "Setting up Development Environment"
-    docker cp "$src"/moodle-dotfiles/ "$COMPOSE_PROJECT_NAME"_webserver_1:/
+    docker cp "$src"/moodle-dotfiles/ "$COMPOSE_PROJECT_NAME"-webserver-1:/
     "$mdocker"/bin/moodle-docker-compose exec webserver bash /moodle-dotfiles/install.sh
     "$mdocker"/bin/moodle-docker-compose restart webserver
     ;;
   "refresh_nvim")
     echo "Refreshing neovim config"
     "$mdocker"/bin/moodle-docker-compose exec webserver bash -c "rm -rf /root/.local/share/nvim && rm -rf /root/.config/nvim"
-    docker cp ~/.config/nvim/ "$COMPOSE_PROJECT_NAME"_webserver_1:/root/.config/
+    docker cp ~/.config/nvim/ "$COMPOSE_PROJECT_NAME"-webserver-1:/root/.config/
     ;;
   *)
     echo "Usage: {up|down|start|stop|restart|install_db|upgrade|purge_caches|cron|phpunit_init|phpunit_run|behat_init|behat|run|setup|refresh_nvim}"
