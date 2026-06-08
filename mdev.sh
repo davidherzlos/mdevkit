@@ -81,7 +81,6 @@ case "$1" in
     echo "Setting up Development Environment"
     docker cp "$src"/moodle-dotfiles/ "$COMPOSE_PROJECT_NAME"-webserver-1:/
     "$mdocker"/bin/moodle-docker-compose exec webserver bash /moodle-dotfiles/install.sh
-    "$mdocker"/bin/moodle-docker-compose restart webserver
     ;;
   "refresh_nvim")
     echo "Refreshing neovim config"
