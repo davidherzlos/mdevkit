@@ -48,7 +48,7 @@ if [ ! -f /var/www/html/config.php ]; then
 fi
 
 # gitconfig if it's not there(new installation).
-if [ ! -f ~/.config/git/config ]; then
+if [ ! -f ~/.gitconfig ]; then
     wget -O ~/.gitconfig https://raw.githubusercontent.com/davidherzlos/dotfiles/refs/heads/master/git/.config/git/config
 fi
 
