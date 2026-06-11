@@ -6,7 +6,3 @@
 	path = moodle
 	url = git@github.com:moodle/moodle.git
 	branch = main
-[submodule "moodle-dotfiles"]
-	path = moodle-dotfiles
-	url = git@github.com:davidherzlos/moodle-dotfiles.git
-	branch = master
