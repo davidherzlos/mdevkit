@@ -49,7 +49,7 @@ fi
 
 # gitconfig if it's not there(new installation).
 if [ ! -f ~/.config/git/config ]; then
-    wget -O ~/.config/git/config https://github.com/davidherzlos/dotfiles/blob/master/git/.config/git/config
+    wget -O ~/.config/git/config https://raw.githubusercontent.com/davidherzlos/dotfiles/refs/heads/master/git/.config/git/config
 fi
 
 echo "Install composer and dependencies for Moodle------------------------------------OK?"
