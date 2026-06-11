@@ -17,13 +17,22 @@ export MOODLE_DOCKER_WWWROOT="$src"/"$moodledir"
 export MOODLE_DOCKER_PHP_VERSION
 export MOODLE_DOCKER_DB
 export MOODLE_DOCKER_WEB_PORT
+export INTELEPHENSE_LICENSE_DIR
+
+echo "env variables:"
+echo "project: $COMPOSE_PROJECT_NAME"
+echo "rootdir: $MOODLE_DOCKER_WWWROOT"
+echo "php: $MOODLE_DOCKER_PHP_VERSION"
+echo "database: $MOODLE_DOCKER_DB"
+echo "port: $MOODLE_DOCKER_WEB_PORT"
+echo "intelephense: $INTELEPHENSE_LICENSE_DIR"
 
 # Commands:
 case "$1" in
   "up")
     echo "Creating and starting moodle containers"
     git submodule update --init
-    cp "$src"./dotfiles/local.yml moodle-docker/
+    cp "$src"/dotfiles/local.yml moodle-docker/
     "$mdocker"/bin/moodle-docker-compose up -d
     ;;
   "down")
@@ -44,8 +53,8 @@ case "$1" in
     ;;
   "setup")
     echo "Setup Development environment"
-    docker cp "$src"./install.sh "$COMPOSE_PROJECT_NAME"-webserver-1:/
-    docker cp "$src"./dotfiles "$COMPOSE_PROJECT_NAME"-webserver-1:/
+    docker cp "$src"/install.sh "$COMPOSE_PROJECT_NAME"-webserver-1:/
+    docker cp "$src"/dotfiles "$COMPOSE_PROJECT_NAME"-webserver-1:/
     "$mdocker"/bin/moodle-docker-compose exec webserver sh /install.sh
     ;;
   "install")
