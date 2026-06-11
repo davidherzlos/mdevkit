@@ -38,9 +38,9 @@ php --version
 
 echo "Copy moodle-dotfiles------------------------------------------------------------OK?"
 # Application helper files.
-cp ~/moodle-dotfiles/application/moodle-psysh.php /var/www/html/
-cp ~/moodle-dotfiles/application/psysh.php /var/www/html/.psysh.php
-cp ~/moodle-dotfiles/application/phpstan.neon /var/www/html/
+cp /dotfiles/moodle-psysh.php /var/www/html/
+cp /dotfiles/psysh.php /var/www/html/.psysh.php
+cp /dotfiles/phpstan.neon /var/www/html/
 
 # config.php if it's not there(new installation).
 if [ ! -f /var/www/html/config.php ]; then
@@ -83,6 +83,7 @@ rm ~/nvim-linux-x86_64.tar.gz
 wget -P ~/ https://github.com/neovim/neovim/releases/download/v${NEOVIM_VERSION}/nvim-linux-x86_64.tar.gz
 rm -rf /opt/nvim
 tar -xzf ~/nvim-linux-x86_64.tar.gz -C /opt
+
 # Only add if not already present
 if ! grep -q "/opt/nvim-linux-x86_64/bin" ~/.bashrc; then
     echo 'export PATH="$PATH:/opt/nvim-linux-x86_64/bin"' >> ~/.bashrc
@@ -92,7 +93,7 @@ rm -rf ~/.local/share/nvim
 git clone https://github.com/davidherzlos/moodle-nvim ~/.config/nvim
 . ~/.bashrc
 
-echo "Tweak number of files to be watched---------------------------------------------OK?"
-sudo bash -c 'echo "fs.inotify.max_user_watches=524288" > /etc/sysctl.d/60-inotify.conf && sysctl -p /etc/sysctl.d/60-inotify.conf'
+echo "Tweak number of files to be watched---------------------------------------------TODO"
+# sudo bash -c 'echo "fs.inotify.max_user_watches=524288" > /etc/sysctl.d/60-inotify.conf && sysctl -p /etc/sysctl.d/60-inotify.conf'
 
 echo "Setup completed. Exited with code $?"

@@ -23,7 +23,7 @@ case "$1" in
   "up")
     echo "Creating and starting moodle containers"
     git submodule update --init
-    cp "$src"/dotfiles/local.yml moodle-docker/
+    cp "$src"./dotfiles/local.yml moodle-docker/
     "$mdocker"/bin/moodle-docker-compose up -d
     ;;
   "down")
@@ -44,8 +44,8 @@ case "$1" in
     ;;
   "setup")
     echo "Setup Development environment"
-    docker cp "$src"/dotfiles/install.sh "$COMPOSE_PROJECT_NAME"-webserver-1:/
-    docker cp "$src"/dotfiles "$COMPOSE_PROJECT_NAME"-webserver-1:/
+    docker cp "$src"./install.sh "$COMPOSE_PROJECT_NAME"-webserver-1:/
+    docker cp "$src"./dotfiles "$COMPOSE_PROJECT_NAME"-webserver-1:/
     "$mdocker"/bin/moodle-docker-compose exec webserver sh /install.sh
     ;;
   "install")
