@@ -22,6 +22,8 @@ export MOODLE_DOCKER_WEB_PORT
 case "$1" in
   "up")
     echo "Creating and starting moodle containers"
+    git submodule update --init
+    cp "$src"/dotfiles/local.yml moodle-docker/
     "$mdocker"/bin/moodle-docker-compose up -d
     ;;
   "down")
@@ -36,59 +38,27 @@ case "$1" in
     echo "Stopping moodle containers"
     "$mdocker"/bin/moodle-docker-compose stop
     ;;
-  "restart")
-    echo "Restarting moodle containers"
-    "$mdocker"/bin/moodle-docker-compose stop
-    "$mdocker"/bin/moodle-docker-compose start
-    ;;
   "restart_webserver")
     echo "Restarting moodle webserver"
     "$mdocker"/bin/moodle-docker-compose restart webserver
     ;;
-  "install_db")
-    echo "Installing moodle database"
+  "setup")
+    echo "Setup Development environment"
+    docker cp "$src"/dotfiles/install.sh "$COMPOSE_PROJECT_NAME"-webserver-1:/
+    docker cp "$src"/dotfiles "$COMPOSE_PROJECT_NAME"-webserver-1:/
+    "$mdocker"/bin/moodle-docker-compose exec webserver sh /install.sh
+    ;;
+  "install")
+    echo "Setup Development environment"
     "$mdocker"/bin/moodle-docker-compose exec webserver php admin/cli/install_database.php --adminpass=admin --agree-license --adminemail=admin@mailinator.com --fullname=DevSite --shortname=devsite
     ;;
-  "upgrade")
-    echo "Upgrading moodle"
-    "$mdocker"/bin/moodle-docker-compose exec webserver php admin/cli/upgrade.php --non-interactive
-    ;;
-  "purge_caches")
-    echo "Purging moodle caches"
-    "$mdocker"/bin/moodle-docker-compose exec webserver php admin/cli/purge_caches.php
-    ;;
-  "cron")
-    echo "Running moodle cron"
-    "$mdocker"/bin/moodle-docker-compose exec webserver php admin/cli/cron.php
-    ;;
-  "phpunit_init")
-    echo "Initialising phpunit"
-    "$mdocker"/bin/moodle-docker-compose exec webserver php admin/tool/phpunit/cli/init.php
-    ;;
-  "phpunit_run")
-    echo "Running phpunit"
-    "$mdocker"/bin/moodle-docker-compose exec webserver vendor/bin/phpunit --color=always "$2" "$3"
-    ;;
-  "behat_init")
-    echo "Initialising behat"
-    "$mdocker"/bin/moodle-docker-compose exec webserver php admin/tool/behat/cli/init.php
-    ;;
-  "behat_run")
-    echo "Running behat"
-    "$mdocker"/bin/moodle-docker-compose exec webserver php admin/tool/behat/cli/run.php
-    ;;
-  "setup")
-    echo "Setting up Development Environment"
-    docker cp "$src"/moodle-dotfiles/ "$COMPOSE_PROJECT_NAME"-webserver-1:/
-    "$mdocker"/bin/moodle-docker-compose exec webserver bash /moodle-dotfiles/install.sh
-    ;;
-  "refresh_nvim")
+  "nvim_refresh")
     echo "Refreshing neovim config"
     "$mdocker"/bin/moodle-docker-compose exec webserver bash -c "rm -rf /root/.local/share/nvim && rm -rf /root/.config/nvim"
     docker cp ~/.config/nvim/ "$COMPOSE_PROJECT_NAME"-webserver-1:/root/.config/
     ;;
   *)
-    echo "Usage: {up|down|start|stop|restart|install_db|upgrade|purge_caches|cron|phpunit_init|phpunit_run|behat_init|behat|run|setup|refresh_nvim}"
+    echo "Usage: {up|down|start|stop|restart_webserver|setup|install|refresh_nvim}"
     exit 1
     ;;
 esac

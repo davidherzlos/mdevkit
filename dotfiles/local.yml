@@ -1,0 +1,14 @@
+version: "2"
+services:
+
+  webserver:
+    volumes:
+      # Maps the intelephense license to be readable from the container.
+      - ${INTELEPHENSE_LICENSE_DIR}/intelephense_license_key_00FLK8N3QY3O0EK:/root/intelephense/intelephense_license_key_00FLK8N3QY3O0EK:ro
+      - ${INTELEPHENSE_LICENSE_DIR}/license.txt:/root/intelephense/license.txt:ro
+
+      # Mounts the host socket path directly to a neutral run path in the container
+      - ${SSH_AUTH_SOCK}:/run/ssh-agent
+    environment:
+      # Tells the internal SSH client where to locate the socket
+      - SSH_AUTH_SOCK=/run/ssh-agent

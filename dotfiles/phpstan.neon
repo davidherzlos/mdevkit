@@ -1,0 +1,8 @@
+includes:
+    - phar://phpstan.phar/conf/bleedingEdge.neon
+    - vendor/micaherne/phpstan-moodle/extension.neon
+parameters:
+    level: 5
+    moodle:
+        rootDirectory: /var/www/html
+
