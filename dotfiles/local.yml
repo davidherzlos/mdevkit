@@ -1,16 +1,26 @@
 services:
-
   webserver:
     volumes:
-      # Maps the intelephense license to be readable from the container.
+      # Intelephense license files
       - ${INTELEPHENSE_LICENSE_DIR}/intelephense_license_key_00FLK8N3QY3O0EK:/root/intelephense/intelephense_license_key_00FLK8N3QY3O0EK:ro
       - ${INTELEPHENSE_LICENSE_DIR}/license.txt:/root/intelephense/license.txt:ro
 
-      # Mounts the host socket path directly to a neutral run path in the container
+      # SSH Agent Socket
       - ${SSH_AUTH_SOCK}:/run/ssh-agent
 
-      # Mounts the ssh config path directly to a neutral run path in the container
-      - ~/.ssh/config:/root/.ssh/config:ro
+      # Mount the config to a TEMPORARY folder instead of directly into /root/.ssh/
+      - ${HOME}/.ssh/config:/tmp/host_ssh_config:ro
+
     environment:
-      # Tells the internal SSH client where to locate the socket
       - SSH_AUTH_SOCK=/run/ssh-agent
+
+    # This entrypoint checks and safely provisions the internal config, 
+    # then hands off control to the original Moodle Docker server image
+    entrypoint: >
+      sh -c "
+      mkdir -p /root/.ssh &&
+      cp /tmp/host_ssh_config /root/.ssh/config &&
+      chmod 700 /root/.ssh &&
+      chmod 600 /root/.ssh/config &&
+      exec /usr/local/bin/docker-php-entrypoint apache2-foreground
+      "
