@@ -65,7 +65,6 @@ case "$1" in
     fi
     if [ -f moodle/public/admin/tool/phpunit/cli/init.php ]; then
       "$mdocker"/bin/moodle-docker-compose exec webserver php public/admin/tool/phpunit/cli/init.php
-      moodle/public/admin/tool/phpunut/cli/init.php
     fi
     ;;
   "nvim_refresh")
