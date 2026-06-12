@@ -52,14 +52,21 @@ case "$1" in
     "$mdocker"/bin/moodle-docker-compose restart webserver
     ;;
   "setup")
-    echo "Setup Development environment"
+    echo "Setup environment"
     docker cp "$src"/install.sh "$COMPOSE_PROJECT_NAME"-webserver-1:/
     docker cp "$src"/dotfiles "$COMPOSE_PROJECT_NAME"-webserver-1:/
     "$mdocker"/bin/moodle-docker-compose exec webserver sh /install.sh
     ;;
   "install")
-    echo "Setup Development environment"
-    "$mdocker"/bin/moodle-docker-compose exec webserver php admin/cli/install_database.php --adminpass=admin --agree-license --adminemail=admin@mailinator.com --fullname=DevSite --shortname=devsite
+    echo "Initialize moodle"
+    "$mdocker"/bin/moodle-docker-compose exec webserver php admin/cli/install_database.php --adminpass=test --agree-license --adminemail=admin@mailinator.com --fullname=DevSite --shortname=devsite
+    if [ -f moodle/admin/tool/phpunit/cli/init.php ]; then
+      "$mdocker"/bin/moodle-docker-compose exec webserver php admin/tool/phpunit/cli/init.php
+    fi
+    if [ -f moodle/public/admin/tool/phpunit/cli/init.php ]; then
+      "$mdocker"/bin/moodle-docker-compose exec webserver php public/admin/tool/phpunit/cli/init.php
+      moodle/public/admin/tool/phpunut/cli/init.php
+    fi
     ;;
   "nvim_refresh")
     echo "Refreshing neovim config"

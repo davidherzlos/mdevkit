@@ -8,6 +8,9 @@ services:
 
       # Mounts the host socket path directly to a neutral run path in the container
       - ${SSH_AUTH_SOCK}:/run/ssh-agent
+
+      # Mounts the ssh config path directly to a neutral run path in the container
+      - ~/.ssh/config:/root/.ssh/config:ro
     environment:
       # Tells the internal SSH client where to locate the socket
       - SSH_AUTH_SOCK=/run/ssh-agent
