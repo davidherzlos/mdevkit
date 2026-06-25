@@ -2,8 +2,8 @@ services:
   webserver:
     volumes:
       # Intelephense license files
-      - ${INTELEPHENSE_LICENSE_DIR}/intelephense_license_key_00FLK8N3QY3O0EK:/root/intelephense/intelephense_license_key_00FLK8N3QY3O0EK:ro
-      - ${INTELEPHENSE_LICENSE_DIR}/license.txt:/root/intelephense/license.txt:ro
+      - ${INTELEPHENSE_LICENSE_DIR}/intelephense_licence_key_00FLK8N3QY3O0EK:/root/intelephense/intelephense_licence_key_00FLK8N3QY3O0EK:ro
+      - ${INTELEPHENSE_LICENSE_DIR}/licence.txt:/root/intelephense/licence.txt:ro
 
       # SSH Agent Socket
       - ${SSH_AUTH_SOCK}:/run/ssh-agent
@@ -13,6 +13,9 @@ services:
 
     environment:
       - SSH_AUTH_SOCK=/run/ssh-agent
+
+      # Hack to point the webserver at the correct docroot for Moodle 4.5 (enable only if site is not reachable)
+      # - APACHE_DOCUMENT_ROOT=/var/www/html
 
     # This entrypoint checks and safely provisions the internal config, 
     # then hands off control to the original Moodle Docker server image
