@@ -1,4 +1,4 @@
-# mdl-main-pgsql
+# mdevkit
 
 A local Moodle development environment built on top of
 [moodle-docker](https://github.com/moodlehq/moodle-docker). The `mdev.sh`
