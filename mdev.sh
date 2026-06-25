@@ -73,7 +73,7 @@ case "$1" in
     docker cp ~/.config/nvim/ "$COMPOSE_PROJECT_NAME"-webserver-1:/root/.config/
     ;;
   *)
-    echo "Usage: {up|down|start|stop|restart_webserver|setup|install|refresh_nvim}"
+    echo "Usage: {up|down|start|stop|restart_webserver|setup|install|nvim_refresh}"
     exit 1
     ;;
 esac
