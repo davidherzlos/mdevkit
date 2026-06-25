@@ -63,18 +63,21 @@ git clone git@github.com:davidherzlos/mdevkit.git      # SSH
 # git clone https://github.com/davidherzlos/mdevkit.git  # HTTPS
 cd mdevkit
 
-# 2. Build and start the containers (also inits submodules + copies local.yml)
+# 2. Review and adjust .env for your machine (PHP version, DB, port, license path)
+$YOUREDITOR .env
+
+# 3. Build and start the containers (also inits submodules + copies local.yml)
 ./mdev.sh up
 
-# 3. Provision dev tooling inside the webserver container
+# 4. Provision dev tooling inside the webserver container
 ./mdev.sh setup
 
-# 4. Install the Moodle database (creates the admin user + PHPUnit if present)
+# 5. Install the Moodle database (creates the admin user + PHPUnit if present)
 ./mdev.sh install
 ```
 
-After `install`, the site is available at **http://localhost:&lt;MOODLE_DOCKER_WEB_PORT&gt;**
-(the port set in `.env`).
+After `install`, the site is available at `http://localhost:<MOODLE_DOCKER_WEB_PORT>`
+— with the default `.env` that is <http://localhost:8080>.
 
 Default admin credentials created by `install`:
 
@@ -90,6 +93,29 @@ to tear everything down:
 ./mdev.sh start     # resume work
 ./mdev.sh down      # tear everything down
 ```
+
+## What `setup` installs
+
+`./mdev.sh setup` copies `install.sh` + `dotfiles/` into the webserver container
+and runs the script. The base moodle-docker image only ships PHP + Apache, so
+the script layers on everything needed to actually develop Moodle from inside
+the container, grouped by purpose:
+
+- **PHP debugging & analysis** — Xdebug (step debugging) plus, via Composer,
+  the Moodle coding standards (`moodle-cs`), `phpstan-moodle` (static analysis),
+  and PsySH (interactive REPL). The matching `phpstan.neon` and PsySH dotfiles
+  are dropped in alongside Moodle's `config.php`.
+- **Frontend build chain** — `nvm` + the Node version Moodle pins, npm
+  dependencies, and `grunt-cli`, which Moodle uses to compile its JS/AMD and
+  SCSS assets.
+- **Database client** — `postgresql-client`, so you can reach the `db`
+  container with `psql` from a shell.
+- **Editor** — a pinned Neovim build with the
+  [moodle-nvim](https://github.com/davidherzlos/moodle-nvim) config, plus its
+  native dependencies: `cmake`/`make`/`gcc`/`luarocks` to compile plugins and
+  tree-sitter parsers, `ripgrep`/`fd` for in-editor search, and `watchman` for
+  file watching. A `.gitconfig` is fetched too.
+- **CLI AI tools** — Claude Code, OpenCode, Auggie, and `tree-sitter-cli`.
 
 ## Commands
 
