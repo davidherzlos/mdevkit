@@ -2,15 +2,21 @@
 
 echo "Running script $0 in process ID: $$"
 
+# Improvements for this script:
+# TODO: Make it modular, each tool into ist function.
+# TODO: Make the script idempotent
+# TODO: Make try to make it as OS generic as possible
+    # TODO: install more packages required by Neovim.
+# TODO: Variables at the top
+    # TODO: add variables for Installing specific versions of sofware.
+# TODO: restart sysctl correctly.
+# TODO: cleanup installation.
+
+
 # NOTE: variables are scoped to the process that creates them
 # however if we want variables with a greater scope, we can
 # export them as enviroment variables.
 
-# TODO: add variables for Installing specific versions of sofware.
-# TODO: improve idempotemcy.
-# TODO: install more packages required by Neovim.
-# TODO: restart sysctl correctly.
-# TODO: cleanup installation.
 
 # Version variables - update these to use newer versions
 NEOVIM_VERSION="0.11.7"
